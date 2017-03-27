@@ -1,4 +1,4 @@
-package org.javacream.books.warehouse;
+package org.javacream.books.warehouse.api;
 
 import java.io.Serializable;
 

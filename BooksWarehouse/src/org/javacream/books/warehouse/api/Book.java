@@ -1,7 +1,7 @@
 /*
  * Created on 20.04.2004
  */
-package org.javacream.books.warehouse;
+package org.javacream.books.warehouse.api;
 
 import java.io.Serializable;
 
