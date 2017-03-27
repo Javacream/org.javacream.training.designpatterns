@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.javacream.books.isbngenerator.IsbnGenerator;
+import org.javacream.store.StoreService;
 
 /**
  * @author Dr. Rainer Sawitzki
@@ -20,15 +22,19 @@ public class BooksService{
 		
 	}
 	private Map<String, Book> books;
+	private IsbnGenerator isbnGenerator;
+	private StoreService storeService;
 	
 	{
 		books = new HashMap<String, Book>();
+		isbnGenerator = new IsbnGenerator();
+		storeService = new StoreService();
 	}
 
 	
 
 	public String newBook(String title, Map<String, Object> options) throws BookException {
-		String isbn = "Isbn" + Math.random(); 
+		String isbn = isbnGenerator.next(); 
 		Book book = new Book();
 		String topic =(String) options.get("topic"); 
 		if(topic != null){
@@ -57,9 +63,7 @@ public class BooksService{
 			throw new BookException(BookException.BookExceptionType.NOT_FOUND,
 					isbn);
 		}
-		int stock = 0;
-		//retrieve stock from external service, e.g. web service call...
-
+		int stock = storeService.getStock("books", isbn);
 		result.setAvailable(stock > 0);
 		//Don't return internal Book if you don't use a database! 
 		result = (Book) SerializationUtils.clone(result);
