@@ -7,13 +7,12 @@ import static org.junit.Assert.fail;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.javacream.books.isbngenerator.impl.RandomIsbnGenerator;
+import org.javacream.application.ApplicationContext;
 import org.javacream.books.warehouse.api.Book;
 import org.javacream.books.warehouse.api.BookException;
+import org.javacream.books.warehouse.api.BooksService;
 import org.javacream.books.warehouse.api.SchoolBook;
 import org.javacream.books.warehouse.api.SpecialistBook;
-import org.javacream.books.warehouse.impl.MapBooksService;
-import org.javacream.store.impl.DummyStoreService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,19 +26,20 @@ import org.junit.Test;
  */
 public class BooksServiceTest {
 
-	private MapBooksService booksService;
+	private BooksService booksService;
 	private String ISBN;
 	private static final String WRONG_ISBN = "##ISBN##";
 	
 	@Before
 	public void init() {
-		booksService = new MapBooksService();
-		RandomIsbnGenerator randomIsbnGenerator = new RandomIsbnGenerator();
-		randomIsbnGenerator.setPrefix("TEST-ISBN:");
-		randomIsbnGenerator.setCountryCode("-dk");
-		DummyStoreService dummyStoreService = new DummyStoreService();
-		booksService.setIsbnGenerator(randomIsbnGenerator);
-		booksService.setStoreService(dummyStoreService);
+//		booksService = new MapBooksService();
+//		RandomIsbnGenerator randomIsbnGenerator = new RandomIsbnGenerator();
+//		randomIsbnGenerator.setPrefix("TEST-ISBN:");
+//		randomIsbnGenerator.setCountryCode("-dk");
+//		DummyStoreService dummyStoreService = new DummyStoreService();
+//		booksService.setIsbnGenerator(randomIsbnGenerator);
+//		booksService.setStoreService(dummyStoreService);
+		booksService = ApplicationContext.booksService();
 		try {
 			ISBN = booksService.newBook("TEST", new HashMap<String, Object>());
 		} catch (BookException e) {
@@ -147,7 +147,7 @@ public class BooksServiceTest {
 	}
 
 
-	private void doTest(MapBooksService booksService) {
+	private void doTest(BooksService booksService) {
 
 		try {
 			Collection<Book> books = booksService.findAllBooks();

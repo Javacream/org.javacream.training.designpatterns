@@ -1,7 +1,7 @@
 package org.javacream.books.isbngenerator.impl;
 
-public class StaticCounterIsbnGenerator extends BaseIsbnGenerator {
-	private static int counter = 0;
+public class CounterIsbnGenerator extends BaseIsbnGenerator {
+	private int counter = 0;
 	
 	@Override
 	public String next(){

@@ -1,15 +1,16 @@
 package org.javacream.store;
 
-import org.javacream.store.impl.DummyStoreService;
+import org.javacream.application.ApplicationContext;
+import org.javacream.store.api.StoreService;
 import org.junit.Before;
 import org.junit.Test;
 
 public class StoreServiceTest {
 
-	private DummyStoreService storeService;
+	private StoreService storeService;
 
 	@Before public void setUp(){
-		storeService = new DummyStoreService();
+		storeService = ApplicationContext.storeService();//new DummyStoreService();
 	}
 	
 	@Test public void storeRequestIsOk(){
