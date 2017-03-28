@@ -17,16 +17,18 @@ import org.javacream.books.warehouse.impl.decorators.SerializingBooksService;
 import org.javacream.books.warehouse.impl.decorators.ValidatingBooksService;
 import org.javacream.books.warehouse.impl.notification.SimpleBookNotificationListener;
 import org.javacream.store.api.StoreService;
-import org.javacream.store.impl.AuditingStoreService;
 import org.javacream.store.impl.adapter.CustomStoreServiceAdapter;
 import org.javacream.store.impl.decorators.AuditingStoreServiceDecorator;
 import org.javacream.util.IdGenerator;
+import org.javacream.util.aspects.Aspect;
+import org.javacream.util.aspects.TracingAspect;
+import org.javacream.util.aspects.impl.TracingAspectListener;
 
 public abstract class ApplicationContext {
 
 	private static IsbnGenerator isbnGenerator;
 	private static BooksService booksService;
-	private static SimpleOrderService orderService;
+	private static OrderService orderService;
 	private static IdGenerator idGenerator;
 
 	static {
@@ -78,8 +80,8 @@ public abstract class ApplicationContext {
 		
 		// Offer objects
 		isbnGenerator = isbnGeneratorImpl;
-		booksService = notifyingBooksService;
-		orderService = simpleOrderService;
+		booksService = TracingAspect.addAspect(notifyingBooksService);
+		orderService = Aspect.addAspect(simpleOrderService, new TracingAspectListener());
 		idGenerator = theIdGenerator;
 
 	}
