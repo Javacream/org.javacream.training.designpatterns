@@ -2,7 +2,6 @@ package org.javacream.books.warehouse.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -31,12 +30,16 @@ public class MapBooksService implements BooksService{
 	private StoreService storeService;
 	
 	{
-		books = new HashMap<String, Book>();
+		//books = new HashMap<String, Book>();
 //		isbnGenerator = new RandomIsbnGenerator();
 //		storeService = new DummyStoreService();
 	}
 
 	
+
+	public void setBooks(Map<String, Book> books) {
+		this.books = books;
+	}
 
 	public void setIsbnGenerator(IsbnGenerator isbnGenerator) {
 		this.isbnGenerator = isbnGenerator;
