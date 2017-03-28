@@ -18,6 +18,7 @@ import org.javacream.books.warehouse.impl.decorators.ValidatingBooksService;
 import org.javacream.books.warehouse.impl.notification.SimpleBookNotificationListener;
 import org.javacream.store.api.StoreService;
 import org.javacream.store.impl.AuditingStoreService;
+import org.javacream.store.impl.adapter.CustomStoreServiceAdapter;
 import org.javacream.store.impl.decorators.AuditingStoreServiceDecorator;
 import org.javacream.util.IdGenerator;
 
@@ -51,8 +52,6 @@ public abstract class ApplicationContext {
 		
 		BookNotificationSupport bookNotificationSupport = new BookNotificationSupport();
 		ArrayList<BookNotificationListener> bookNotificationListeners = new ArrayList<>();
-		bookNotificationListeners.add(new SimpleBookNotificationListener());
-		bookNotificationListeners.add(new SimpleBookNotificationListener());
 		
 		
 		// set Dependencies
@@ -72,6 +71,11 @@ public abstract class ApplicationContext {
 		notifyingBooksService.setDelegate(serializingBooksService);
 		notifyingBooksService.setBookNotificationSupport(bookNotificationSupport);
 		bookNotificationSupport.setListeners(bookNotificationListeners);
+		bookNotificationListeners.add(new SimpleBookNotificationListener());
+		bookNotificationListeners.add(new SimpleBookNotificationListener());
+
+		
+		
 		// Offer objects
 		isbnGenerator = isbnGeneratorImpl;
 		booksService = notifyingBooksService;
@@ -91,8 +95,9 @@ public abstract class ApplicationContext {
 	public static StoreService storeService() {
 		// Method Scoped, just as an example...
 		AuditingStoreServiceDecorator auditingStoreServiceDecorator = new AuditingStoreServiceDecorator();
-		StoreService implemenentation = new AuditingStoreService();
-		auditingStoreServiceDecorator.setStoreService(implemenentation);
+		//StoreService implemenentation = new AuditingStoreService();
+		CustomStoreServiceAdapter customStoreServiceAdapter = new CustomStoreServiceAdapter();
+		auditingStoreServiceDecorator.setStoreService(customStoreServiceAdapter);
 		return auditingStoreServiceDecorator;
 	}
 
