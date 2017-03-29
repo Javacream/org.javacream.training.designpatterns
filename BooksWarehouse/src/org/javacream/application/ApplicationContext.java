@@ -13,6 +13,7 @@ import org.javacream.books.warehouse.api.Book;
 import org.javacream.books.warehouse.api.BookBuilder;
 import org.javacream.books.warehouse.api.BookCreator;
 import org.javacream.books.warehouse.api.BooksService;
+import org.javacream.books.warehouse.api.Comic;
 import org.javacream.books.warehouse.api.SchoolBook;
 import org.javacream.books.warehouse.api.SpecialistBook;
 import org.javacream.books.warehouse.api.notification.BookNotificationListener;
@@ -75,6 +76,9 @@ public abstract class ApplicationContext {
 		bookCreatorKey.add("subject");
 		bookCreatorKey.add("year");
 		creators.put(bookCreatorKey, (isbn, title, price, options) -> new SchoolBook(isbn, title, price, false, (int)options.get("year"), (String)options.get("subject")));
+		bookCreatorKey = new HashSet<>();
+		bookCreatorKey.add("hero");
+		creators.put(bookCreatorKey, (isbn, title, price, options) -> new Comic(isbn, title, price, false, (String)options.get("hero")));
 
 		// set Dependencies
 		mapBooksService.setBooks(testData);

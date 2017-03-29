@@ -11,6 +11,7 @@ import org.javacream.application.ApplicationContext;
 import org.javacream.books.warehouse.api.Book;
 import org.javacream.books.warehouse.api.BookException;
 import org.javacream.books.warehouse.api.BooksService;
+import org.javacream.books.warehouse.api.Comic;
 import org.javacream.books.warehouse.api.SchoolBook;
 import org.javacream.books.warehouse.api.SpecialistBook;
 import org.junit.Assert;
@@ -131,6 +132,16 @@ public class BooksServiceTest {
 
 	}
 
+	@Test public void createComic() throws BookException{
+		HashMap<String, Object> options = new HashMap<String, Object>();
+		options.put("hero", "Superman");
+		String isbn = booksService.newBook("TEST", options);
+		Book book = booksService.findBookByIsbn(isbn);
+		Assert.assertTrue(book.getClass() == Comic.class);
+
+	}
+
+	
 	@Test public void createSpecialistBook() throws BookException{
 		HashMap<String, Object> options = new HashMap<String, Object>();
 		options.put("topic", "Very Special");
