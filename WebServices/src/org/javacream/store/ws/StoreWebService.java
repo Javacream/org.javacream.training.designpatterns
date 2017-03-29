@@ -20,6 +20,7 @@ public class StoreWebService {
 	@WebMethod(operationName = "RetrieveStock")
 	public @WebResult(name = "Stock") int stock(@WebParam(name = "Category") String category,
 			@WebParam(name = "ItemId") String id) {
+		System.out.println("received store request...");
 		return storeService.getStock(category, id);
 	}
 

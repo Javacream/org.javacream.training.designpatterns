@@ -32,6 +32,12 @@
 			<artifactId>org.javacream.training.designpatterns.customstoreservice</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.javacream.training.designpatterns</groupId>
+			<artifactId>org.javacream.training.designpatterns.webservice.client</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>

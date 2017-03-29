@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.javacream.books.isbngenerator.api.IsbnGenerator;
-import org.javacream.books.isbngenerator.impl.CounterIsbnGenerator;
+import org.javacream.books.isbngenerator.impl.ws.FetchingIsbnGeneratorWebServiceBusinessDelegate;
 import org.javacream.books.order.api.OrderService;
 import org.javacream.books.order.impl.SimpleOrderService;
 import org.javacream.books.warehouse.api.Book;
@@ -24,8 +24,8 @@ import org.javacream.books.warehouse.impl.decorators.SerializingBooksService;
 import org.javacream.books.warehouse.impl.decorators.ValidatingBooksService;
 import org.javacream.books.warehouse.impl.notification.SimpleBookNotificationListener;
 import org.javacream.store.api.StoreService;
-import org.javacream.store.impl.adapter.CustomStoreServiceAdapter;
 import org.javacream.store.impl.decorators.AuditingStoreServiceDecorator;
+import org.javacream.store.impl.ws.StoreWebServiceBusinessDelegate;
 import org.javacream.util.IdGenerator;
 import org.javacream.util.aspects.Aspect;
 import org.javacream.util.aspects.TracingAspect;
@@ -43,7 +43,9 @@ public abstract class ApplicationContext {
 	static {
 
 		// Create Objects
-		CounterIsbnGenerator isbnGeneratorImpl = new CounterIsbnGenerator();
+		//CounterIsbnGenerator isbnGeneratorImpl = new CounterIsbnGenerator();
+		//IsbnGeneratorWebServiceBusinessDelegate isbnGeneratorImpl = new IsbnGeneratorWebServiceBusinessDelegate(); 
+		FetchingIsbnGeneratorWebServiceBusinessDelegate isbnGeneratorImpl = new FetchingIsbnGeneratorWebServiceBusinessDelegate();
 		MapBooksService mapBooksService = new MapBooksService();
 		SimpleOrderService simpleOrderService = new SimpleOrderService();
 		HashMap<String, Book> testData = new HashMap<>();
@@ -90,9 +92,9 @@ public abstract class ApplicationContext {
 		simpleOrderService.setIdGenerator(theIdGenerator);
 		simpleOrderService.setStoreService(storeService());
 
-		isbnGeneratorImpl.setPrefix("ISBN:");
-		isbnGeneratorImpl.setCountryCode("-dk");
-
+//		isbnGeneratorImpl.setPrefix("ISBN:");
+//		isbnGeneratorImpl.setCountryCode("-dk");
+		isbnGeneratorImpl.setFetchSize(1000);
 		serializingBooksService.setDelegate(validatingBooksService);
 		validatingBooksService.setDelegate(mapBooksService);
 		notifyingBooksService.setDelegate(serializingBooksService);
@@ -123,8 +125,9 @@ public abstract class ApplicationContext {
 		// Method Scoped, just as an example...
 		AuditingStoreServiceDecorator auditingStoreServiceDecorator = new AuditingStoreServiceDecorator();
 		//StoreService implemenentation = new AuditingStoreService();
-		CustomStoreServiceAdapter customStoreServiceAdapter = new CustomStoreServiceAdapter();
-		auditingStoreServiceDecorator.setStoreService(customStoreServiceAdapter);
+		//CustomStoreServiceAdapter customStoreServiceAdapter = new CustomStoreServiceAdapter();
+		StoreWebServiceBusinessDelegate storeWebServiceBusinessDelegate = new StoreWebServiceBusinessDelegate();
+		auditingStoreServiceDecorator.setStoreService(storeWebServiceBusinessDelegate);
 		return auditingStoreServiceDecorator;
 	}
 
