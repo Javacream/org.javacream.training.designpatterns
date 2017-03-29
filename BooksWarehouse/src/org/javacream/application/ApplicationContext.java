@@ -8,6 +8,7 @@ import org.javacream.books.isbngenerator.impl.CounterIsbnGenerator;
 import org.javacream.books.order.api.OrderService;
 import org.javacream.books.order.impl.SimpleOrderService;
 import org.javacream.books.warehouse.api.Book;
+import org.javacream.books.warehouse.api.BookBuilder;
 import org.javacream.books.warehouse.api.BooksService;
 import org.javacream.books.warehouse.api.notification.BookNotificationListener;
 import org.javacream.books.warehouse.api.notification.BookNotificationSupport;
@@ -57,12 +58,14 @@ public abstract class ApplicationContext {
 		BookNotificationSupport bookNotificationSupport = new BookNotificationSupport();
 		ArrayList<BookNotificationListener> bookNotificationListeners = new ArrayList<>();
 		
+		BookBuilder bookBuilder = new BookBuilder();
 		
 		// set Dependencies
 		mapBooksService.setBooks(testData);
 		mapBooksService.setIsbnGenerator(isbnGeneratorImpl);
 		mapBooksService.setStoreService(storeService());
-
+		mapBooksService.setBookBuilder(bookBuilder);
+		
 		simpleOrderService.setBooksService(mapBooksService);
 		simpleOrderService.setIdGenerator(theIdGenerator);
 		simpleOrderService.setStoreService(storeService());
@@ -83,7 +86,7 @@ public abstract class ApplicationContext {
 		// Offer objects
 		isbnGenerator = isbnGeneratorImpl;
 		booksService = TracingAspect.addAspect(notifyingBooksService);
-		orderService = Aspect.addAspect(simpleOrderService, new TracingAspectListener(), new ProfilingAspectListener(), new NetworkSimulatorAspectListener(2000));
+		orderService = Aspect.addAspect(simpleOrderService, new TracingAspectListener(), new ProfilingAspectListener(), new NetworkSimulatorAspectListener(200));
 		idGenerator = theIdGenerator;
 
 	}
