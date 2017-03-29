@@ -26,18 +26,21 @@ public class AspectsTest {
 		names = Aspect.addAspect(names, new AspectListener() {
 			
 			@Override
-			public void throwing(String methodName, Object[] args, Throwable t) {
+			public Throwable throwing(String methodName, Object[] args, Throwable t) {
 				System.out.println("throwing");
+				return t;
 			}
 			
 			@Override
-			public void returning(String methodName, Object[] args , Object result) {
+			public Object returning(String methodName, Object[] args , Object result) {
 				System.out.println("returning");
+				return result;
 			}
 			
 			@Override
-			public void before(String methodName, Object[] args) {
+			public Object[] before(String methodName, Object[] args) {
 				System.out.println("before");
+				return args;
 			}
 		});
 		names.add("Hugo");

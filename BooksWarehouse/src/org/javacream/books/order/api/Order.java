@@ -1,7 +1,10 @@
 package org.javacream.books.order.api;
 
-public class Order {
+import java.io.Serializable;
 
+public class Order implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private long orderId;
 	private String isbn;
 	@Override

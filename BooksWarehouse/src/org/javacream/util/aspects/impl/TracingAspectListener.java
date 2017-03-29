@@ -4,18 +4,21 @@ import org.javacream.util.aspects.AspectListener;
 
 public class TracingAspectListener implements AspectListener{
 	@Override
-	public void throwing(String methodName, Object[] args, Throwable t) {
+	public Throwable throwing(String methodName, Object[] args, Throwable t) {
 		System.out.println("throwing from  " + methodName + ", throwable=" + t);
+		return t;
 	}
 
 	@Override
-	public void returning(String methodName, Object[] args, Object result) {
+	public Object returning(String methodName, Object[] args, Object result) {
 		System.out.println("returning from  " + methodName + ", result=" + result);
+		return result;
 	}
 
 	@Override
-	public void before(String methodName, Object[] args) {
+	public Object[] before(String methodName, Object[] args) {
 		System.out.println("entering " + methodName);
+		return args;
 	}
 
 }

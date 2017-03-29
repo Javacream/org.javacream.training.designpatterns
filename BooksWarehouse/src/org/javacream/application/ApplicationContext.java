@@ -22,6 +22,8 @@ import org.javacream.store.impl.decorators.AuditingStoreServiceDecorator;
 import org.javacream.util.IdGenerator;
 import org.javacream.util.aspects.Aspect;
 import org.javacream.util.aspects.TracingAspect;
+import org.javacream.util.aspects.impl.NetworkSimulatorAspectListener;
+import org.javacream.util.aspects.impl.ProfilingAspectListener;
 import org.javacream.util.aspects.impl.TracingAspectListener;
 
 public abstract class ApplicationContext {
@@ -81,7 +83,7 @@ public abstract class ApplicationContext {
 		// Offer objects
 		isbnGenerator = isbnGeneratorImpl;
 		booksService = TracingAspect.addAspect(notifyingBooksService);
-		orderService = Aspect.addAspect(simpleOrderService, new TracingAspectListener());
+		orderService = Aspect.addAspect(simpleOrderService, new TracingAspectListener(), new ProfilingAspectListener(), new NetworkSimulatorAspectListener(2000));
 		idGenerator = theIdGenerator;
 
 	}
