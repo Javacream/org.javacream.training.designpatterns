@@ -61,7 +61,7 @@ public class MapBooksService implements BooksService {
 	@Override
 	public String newBook(String title, Map<String, Object> options) throws BookException {
 		String isbn = isbnGenerator.next();
-		Book book = bookBuilder.create(isbn, title, options);
+		Book book = bookBuilder.setIsbn(isbn).setTitle(title).setOptions(options).build();
 		books.put(isbn, book);
 		return isbn;
 	}

@@ -3,8 +3,40 @@ package org.javacream.books.warehouse.api;
 import java.util.Map;
 
 public class BookBuilder {
+	
+	private String isbn;
+	private String title;
+	private double price;
+	private Map<String, Object> options;
+	
+	
+	public BookBuilder setIsbn(String isbn) {
+		this.isbn = isbn;
+		return this;
+	}
 
-	public Book create(String isbn, String title, Map<String, Object> options){
+
+	public BookBuilder setTitle(String title) {
+		this.title = title;
+		return this;
+	}
+
+
+	public BookBuilder setPrice(double price) {
+		this.price = price;
+		return this;
+
+	}
+
+
+	public BookBuilder setOptions(Map<String, Object> options) {
+		this.options = options;
+		return this;
+
+	}
+
+
+	public Book build(){
 		Book book = new Book();
 		String topic =(String) options.get("topic"); 
 		if(topic != null){
@@ -23,6 +55,7 @@ public class BookBuilder {
 		
 		book.setIsbn(isbn);
 		book.setTitle(title);
+		book.setPrice(price);
 		return book;
 	}
 }
