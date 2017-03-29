@@ -1,6 +1,7 @@
 package org.javacream.books.warehouse.api;
 
 import java.util.Map;
+import java.util.Set;
 
 public class BookBuilder {
 	
@@ -9,7 +10,13 @@ public class BookBuilder {
 	private double price;
 	private Map<String, Object> options;
 	
+	private Map<Set<String>, BookCreator> creators;
 	
+	public void setCreators(Map<Set<String>, BookCreator> creators) {
+		this.creators = creators;
+	}
+
+
 	public BookBuilder setIsbn(String isbn) {
 		this.isbn = isbn;
 		return this;
@@ -37,25 +44,6 @@ public class BookBuilder {
 
 
 	public Book build(){
-		Book book = new Book();
-		String topic =(String) options.get("topic"); 
-		if(topic != null){
-			SpecialistBook specialistBook = new SpecialistBook();
-			specialistBook.setTopic(topic);
-			book = specialistBook;
-		}
-		String subject =(String) options.get("subject"); 
-		Integer year =(Integer) options.get("year"); 
-		if(subject != null && year != null){
-			SchoolBook schoolBook = new SchoolBook();
-			schoolBook.setYear(year);
-			schoolBook.setSubject(subject);
-			book = schoolBook;
-		}
-		
-		book.setIsbn(isbn);
-		book.setTitle(title);
-		book.setPrice(price);
-		return book;
+		return creators.get(options.keySet()).create(isbn, title, price, options);
 	}
 }

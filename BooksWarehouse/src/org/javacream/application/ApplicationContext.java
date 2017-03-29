@@ -2,6 +2,8 @@ package org.javacream.application;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.javacream.books.isbngenerator.api.IsbnGenerator;
 import org.javacream.books.isbngenerator.impl.CounterIsbnGenerator;
@@ -9,7 +11,10 @@ import org.javacream.books.order.api.OrderService;
 import org.javacream.books.order.impl.SimpleOrderService;
 import org.javacream.books.warehouse.api.Book;
 import org.javacream.books.warehouse.api.BookBuilder;
+import org.javacream.books.warehouse.api.BookCreator;
 import org.javacream.books.warehouse.api.BooksService;
+import org.javacream.books.warehouse.api.SchoolBook;
+import org.javacream.books.warehouse.api.SpecialistBook;
 import org.javacream.books.warehouse.api.notification.BookNotificationListener;
 import org.javacream.books.warehouse.api.notification.BookNotificationSupport;
 import org.javacream.books.warehouse.impl.MapBooksService;
@@ -59,7 +64,18 @@ public abstract class ApplicationContext {
 		ArrayList<BookNotificationListener> bookNotificationListeners = new ArrayList<>();
 		
 		BookBuilder bookBuilder = new BookBuilder();
-		
+		HashMap<Set<String>, BookCreator> creators = new HashMap<>();
+		bookBuilder.setCreators(creators);
+		HashSet<String> bookCreatorKey = new HashSet<>();
+		creators.put(bookCreatorKey, (isbn, title, price, options) -> new Book(isbn, title, price, false));
+		bookCreatorKey = new HashSet<>();
+		bookCreatorKey.add("topic");
+		creators.put(bookCreatorKey, (isbn, title, price, options) -> new SpecialistBook(isbn, title, price, false, (String)options.get("topic")));
+		bookCreatorKey = new HashSet<>();
+		bookCreatorKey.add("subject");
+		bookCreatorKey.add("year");
+		creators.put(bookCreatorKey, (isbn, title, price, options) -> new SchoolBook(isbn, title, price, false, (int)options.get("year"), (String)options.get("subject")));
+
 		// set Dependencies
 		mapBooksService.setBooks(testData);
 		mapBooksService.setIsbnGenerator(isbnGeneratorImpl);
