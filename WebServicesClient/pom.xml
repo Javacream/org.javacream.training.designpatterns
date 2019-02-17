@@ -28,7 +28,7 @@
 							<useJdkToolchainExecutable>true</useJdkToolchainExecutable>
 							<packageName>org.javacream.store.ws.client</packageName>
 							<wsdlUrls>
-								<wsdlUrl>http://10.28.4.1:9900/StoreWebService?WSDL</wsdlUrl>
+								<wsdlUrl>http://localhost:9900/StoreWebService?WSDL</wsdlUrl>
 							</wsdlUrls>
 							<xnocompile>true</xnocompile>
 							<sourceDestDir>src</sourceDestDir>
