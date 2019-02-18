@@ -1,4 +1,4 @@
-package org.javacream.books.warehouse.api.notification;
+package org.javacream.books.warehouse.api.event;
 
 import java.util.List;
 

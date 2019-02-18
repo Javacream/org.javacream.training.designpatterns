@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.javacream.books.warehouse.api.Book;
 import org.javacream.books.warehouse.api.BookException;
-import org.javacream.books.warehouse.api.notification.BookEventSupport;
+import org.javacream.books.warehouse.api.event.BookEventSupport;
 
 public class EventBooksService extends BaseBooksServiceDecorator{
 	
