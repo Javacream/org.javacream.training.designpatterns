@@ -4,15 +4,15 @@ import java.util.Map;
 
 import org.javacream.books.warehouse.api.Book;
 import org.javacream.books.warehouse.api.BookException;
-import org.javacream.books.warehouse.api.notification.BookNotificationSupport;
+import org.javacream.books.warehouse.api.notification.BookEventSupport;
 
-public class NotifyingBooksService extends BaseBooksServiceDecorator{
+public class EventBooksService extends BaseBooksServiceDecorator{
 	
 
-	private BookNotificationSupport bookNotificationSupport;
+	private BookEventSupport bookNotificationSupport;
 	
 	
-	public void setBookNotificationSupport(BookNotificationSupport bookNotificationSupport) {
+	public void setBookNotificationSupport(BookEventSupport bookNotificationSupport) {
 		this.bookNotificationSupport = bookNotificationSupport;
 	}
 

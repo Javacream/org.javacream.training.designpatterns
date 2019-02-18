@@ -9,13 +9,13 @@ import org.javacream.books.order.api.OrderService;
 import org.javacream.books.order.impl.SimpleOrderService;
 import org.javacream.books.warehouse.api.Book;
 import org.javacream.books.warehouse.api.BooksService;
-import org.javacream.books.warehouse.api.notification.BookNotificationListener;
-import org.javacream.books.warehouse.api.notification.BookNotificationSupport;
+import org.javacream.books.warehouse.api.notification.BookEventListener;
+import org.javacream.books.warehouse.api.notification.BookEventSupport;
 import org.javacream.books.warehouse.impl.MapBooksService;
-import org.javacream.books.warehouse.impl.decorators.NotifyingBooksService;
+import org.javacream.books.warehouse.impl.decorators.EventBooksService;
 import org.javacream.books.warehouse.impl.decorators.SerializingBooksService;
 import org.javacream.books.warehouse.impl.decorators.ValidatingBooksService;
-import org.javacream.books.warehouse.impl.notification.SimpleBookNotificationListener;
+import org.javacream.books.warehouse.impl.event.SimpleBookEventListener;
 import org.javacream.store.api.StoreService;
 import org.javacream.store.impl.AuditingStoreService;
 import org.javacream.store.impl.decorators.AuditingStoreServiceDecorator;
@@ -47,12 +47,12 @@ public abstract class ApplicationContext {
 		IdGenerator theIdGenerator = new IdGenerator();
 		ValidatingBooksService validatingBooksService = new ValidatingBooksService();
 		SerializingBooksService serializingBooksService = new SerializingBooksService();
-		NotifyingBooksService notifyingBooksService = new NotifyingBooksService();
+		EventBooksService notifyingBooksService = new EventBooksService();
 		
-		BookNotificationSupport bookNotificationSupport = new BookNotificationSupport();
-		ArrayList<BookNotificationListener> bookNotificationListeners = new ArrayList<>();
-		bookNotificationListeners.add(new SimpleBookNotificationListener());
-		bookNotificationListeners.add(new SimpleBookNotificationListener());
+		BookEventSupport bookNotificationSupport = new BookEventSupport();
+		ArrayList<BookEventListener> bookNotificationListeners = new ArrayList<>();
+		bookNotificationListeners.add(new SimpleBookEventListener());
+		bookNotificationListeners.add(new SimpleBookEventListener());
 		
 		
 		// set Dependencies

@@ -2,7 +2,7 @@ package org.javacream.books.warehouse.api.notification;
 
 import java.io.Serializable;
 
-public class BookNotification implements Serializable{
+public class BookEvent implements Serializable{
 
 	/**
 	 * 
@@ -28,7 +28,7 @@ public class BookNotification implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BookNotification other = (BookNotification) obj;
+		BookEvent other = (BookEvent) obj;
 		if (action != other.action)
 			return false;
 		if (isbn == null) {
@@ -44,7 +44,7 @@ public class BookNotification implements Serializable{
 	public String toString() {
 		return "BookNotification [isbn=" + isbn + ", timestamp=" + timestamp + ", action=" + action + "]";
 	}
-	public BookNotification(String isbn, long timestamp, BookNotificationAction action) {
+	public BookEvent(String isbn, long timestamp, BookEventAction action) {
 		super();
 		this.isbn = isbn;
 		this.timestamp = timestamp;
@@ -56,9 +56,9 @@ public class BookNotification implements Serializable{
 	public long getTimestamp() {
 		return timestamp;
 	}
-	public BookNotificationAction getAction() {
+	public BookEventAction getAction() {
 		return action;
 	}
 	private long timestamp;
-	private BookNotificationAction action;
+	private BookEventAction action;
 }
