@@ -1,11 +1,8 @@
 package org.javacream.books.warehouse.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.SerializationUtils;
 import org.javacream.books.isbngenerator.api.IsbnGenerator;
 import org.javacream.books.warehouse.api.Book;
 import org.javacream.books.warehouse.api.BookException;
@@ -31,12 +28,16 @@ public class MapBooksService implements BooksService{
 	private StoreService storeService;
 	
 	{
-		books = new HashMap<String, Book>();
+		//books = new HashMap<String, Book>();
 //		isbnGenerator = new RandomIsbnGenerator();
 //		storeService = new DummyStoreService();
 	}
 
 	
+
+	public void setBooks(Map<String, Book> books) {
+		this.books = books;
+	}
 
 	public void setIsbnGenerator(IsbnGenerator isbnGenerator) {
 		this.isbnGenerator = isbnGenerator;
@@ -86,8 +87,6 @@ public class MapBooksService implements BooksService{
 		}
 		int stock = storeService.getStock("books", isbn);
 		result.setAvailable(stock > 0);
-		//Don't return internal Book if you don't use a database! 
-		result = (Book) SerializationUtils.clone(result);
 		return result;
 	}
 
@@ -96,14 +95,6 @@ public class MapBooksService implements BooksService{
 	 */
 	@Override
 	public Book updateBook(Book bookDetailValue) throws BookException {
-		//Take a copy to prevent external manipulation!
-		bookDetailValue = (Book) SerializationUtils.clone(bookDetailValue);
-
-		if (bookDetailValue.getPrice() <= 0) {
-			throw new BookException(BookException.BookExceptionType.CONSTRAINT,
-					"price <= 0");
-		}
-
 		Book value = books.get(bookDetailValue.getIsbn());
 		value.setTitle(bookDetailValue.getTitle());
 		value.setPrice(bookDetailValue.getPrice());
@@ -129,7 +120,7 @@ public class MapBooksService implements BooksService{
 	 */
 	@Override
 	public Collection<Book> findAllBooks() {
-		return (Collection<Book>) SerializationUtils.clone(new ArrayList<Book>(books.values()));
+		return books.values();
 	}
 	
 }
