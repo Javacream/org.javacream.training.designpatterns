@@ -1,5 +1,6 @@
 package org.javacream.application;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.javacream.books.isbngenerator.api.IsbnGenerator;
@@ -8,9 +9,13 @@ import org.javacream.books.order.api.OrderService;
 import org.javacream.books.order.impl.SimpleOrderService;
 import org.javacream.books.warehouse.api.Book;
 import org.javacream.books.warehouse.api.BooksService;
+import org.javacream.books.warehouse.api.notification.BookNotificationListener;
+import org.javacream.books.warehouse.api.notification.BookNotificationSupport;
 import org.javacream.books.warehouse.impl.MapBooksService;
+import org.javacream.books.warehouse.impl.decorators.NotifyingBooksService;
 import org.javacream.books.warehouse.impl.decorators.SerializingBooksService;
 import org.javacream.books.warehouse.impl.decorators.ValidatingBooksService;
+import org.javacream.books.warehouse.impl.notification.SimpleBookNotificationListener;
 import org.javacream.store.api.StoreService;
 import org.javacream.store.impl.AuditingStoreService;
 import org.javacream.store.impl.decorators.AuditingStoreServiceDecorator;
@@ -42,7 +47,14 @@ public abstract class ApplicationContext {
 		IdGenerator theIdGenerator = new IdGenerator();
 		ValidatingBooksService validatingBooksService = new ValidatingBooksService();
 		SerializingBooksService serializingBooksService = new SerializingBooksService();
-
+		NotifyingBooksService notifyingBooksService = new NotifyingBooksService();
+		
+		BookNotificationSupport bookNotificationSupport = new BookNotificationSupport();
+		ArrayList<BookNotificationListener> bookNotificationListeners = new ArrayList<>();
+		bookNotificationListeners.add(new SimpleBookNotificationListener());
+		bookNotificationListeners.add(new SimpleBookNotificationListener());
+		
+		
 		// set Dependencies
 		mapBooksService.setBooks(testData);
 		mapBooksService.setIsbnGenerator(isbnGeneratorImpl);
@@ -57,10 +69,12 @@ public abstract class ApplicationContext {
 
 		serializingBooksService.setDelegate(validatingBooksService);
 		validatingBooksService.setDelegate(mapBooksService);
-
+		notifyingBooksService.setDelegate(serializingBooksService);
+		notifyingBooksService.setBookNotificationSupport(bookNotificationSupport);
+		bookNotificationSupport.setListeners(bookNotificationListeners);
 		// Offer objects
 		isbnGenerator = isbnGeneratorImpl;
-		booksService = serializingBooksService;
+		booksService = notifyingBooksService;
 		orderService = simpleOrderService;
 		idGenerator = theIdGenerator;
 
