@@ -22,7 +22,10 @@ import org.javacream.store.api.StoreService;
 import org.javacream.store.impl.AuditingStoreService;
 import org.javacream.store.impl.decorators.AuditingStoreServiceDecorator;
 import org.javacream.util.IdGenerator;
-import org.javacream.util.aspects.SerializingAspect;
+import org.javacream.util.aspects.Aspect;
+import org.javacream.util.aspects.AspectListener;
+import org.javacream.util.aspects.impl.SerializingAspect;
+import org.javacream.util.aspects.impl.TracingAspectListener;
 
 public abstract class ApplicationContext {
 
@@ -74,7 +77,8 @@ public abstract class ApplicationContext {
 	serializingAspect.setDelegate(validatingBooksService);
 	validatingBooksService.setDelegate(mapBooksService);
 	BooksService serializingBooksService = createSerializingAspect(validatingBooksService);
-	notifyingBooksService.setDelegate(serializingBooksService);
+	BooksService tracingBooksService = addAspect(serializingBooksService, new TracingAspectListener());
+	notifyingBooksService.setDelegate(tracingBooksService);
 	notifyingBooksService.setBookNotificationSupport(bookNotificationSupport);
 	bookNotificationSupport.setListeners(bookNotificationListeners);
 	// Offer objects
@@ -113,11 +117,24 @@ public abstract class ApplicationContext {
     public static <T> T createSerializingAspect(Object delegate) {
 	SerializingAspect aspect = new SerializingAspect();
 	aspect.setDelegate(delegate);
-	// return (BooksService) aspect; // so nicht
 	ClassLoader classLoader = SerializingAspect.class.getClassLoader();
 	List<Class<?>> interfacesList = ClassUtils.getAllInterfaces(delegate.getClass());
 	Class<?>[] interfaces = new Class<?>[interfacesList.size()];
 	interfacesList.toArray(interfaces);
 	return (T) Proxy.newProxyInstance(classLoader, interfaces, aspect);
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T addAspect(T delegate, AspectListener al) {
+	Aspect aspect = new Aspect();
+	aspect.setDelegate(delegate);
+	aspect.setListener(al);
+	List<Class<?>> interfaces = ClassUtils.getAllInterfaces(delegate.getClass());
+	Class<?>[] interfacesArray = new Class[interfaces.size()];
+	interfaces.toArray(interfacesArray);
+	ClassLoader cl = delegate.getClass().getClassLoader();
+	Object proxy = Proxy.newProxyInstance(cl, interfacesArray, aspect);
+	return (T) proxy;
+    }
+
 }

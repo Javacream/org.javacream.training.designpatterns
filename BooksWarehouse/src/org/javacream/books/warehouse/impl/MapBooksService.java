@@ -1,5 +1,6 @@
 package org.javacream.books.warehouse.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -120,7 +121,7 @@ public class MapBooksService implements BooksService{
 	 */
 	@Override
 	public Collection<Book> findAllBooks() {
-		return books.values();
+		return new ArrayList<>(books.values());
 	}
 	
 }

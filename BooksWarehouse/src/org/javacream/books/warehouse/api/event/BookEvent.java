@@ -42,7 +42,7 @@ public class BookEvent implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "BookNotification [isbn=" + isbn + ", timestamp=" + timestamp + ", action=" + action + "]";
+	    return "BookEvent [isbn=" + isbn + ", timestamp=" + timestamp + ", action=" + action + "]";
 	}
 	public BookEvent(String isbn, long timestamp, BookEventAction action) {
 		super();
