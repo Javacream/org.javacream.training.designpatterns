@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="com.javacream.store-1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/BooksWarehouse/lib/com.javacream.store-1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

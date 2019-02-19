@@ -5,10 +5,12 @@ import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebResult;
+import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 
 import org.javacream.books.isbngenerator.impl.RandomIsbnGenerator;
 
+@WebService
 public class FetchingIsbnGeneratorWebService {
 
 	private RandomIsbnGenerator randomIsbnGenerator;
