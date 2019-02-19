@@ -44,17 +44,4 @@ public final class Aspect implements InvocationHandler {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> T addAspect(T delegate, AspectListener... aspectListeners) {
-		Aspect aspect = new Aspect();
-		aspect.setDelegate(delegate);
-		aspect.setListeners(Arrays.asList(aspectListeners));
-		List<Class<?>> interfaces = ClassUtils.getAllInterfaces(delegate.getClass());
-		Class<?>[] interfacesArray = new Class[interfaces.size()];
-		interfaces.toArray(interfacesArray);
-		ClassLoader cl = delegate.getClass().getClassLoader();
-		Object proxy = Proxy.newProxyInstance(cl, interfacesArray, aspect);
-		return (T) proxy;
-	}
-
 }

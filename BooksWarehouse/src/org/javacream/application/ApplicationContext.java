@@ -1,10 +1,14 @@
 package org.javacream.application;
 
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.javacream.books.isbngenerator.api.IsbnGenerator;
 import org.javacream.books.isbngenerator.impl.ws.FetchingIsbnGeneratorWebServiceBusinessDelegate;
 import org.javacream.books.order.api.OrderService;
@@ -28,6 +32,9 @@ import org.javacream.store.impl.decorators.AuditingStoreServiceDecorator;
 import org.javacream.store.impl.ws.StoreWebServiceBusinessDelegate;
 import org.javacream.util.IdGenerator;
 import org.javacream.util.aspects.Aspect;
+import org.javacream.util.aspects.AspectListener;
+import org.javacream.util.aspects.BaseAspect;
+import org.javacream.util.aspects.NoOpAspect;
 import org.javacream.util.aspects.TracingAspect;
 import org.javacream.util.aspects.impl.NetworkSimulatorAspectListener;
 import org.javacream.util.aspects.impl.ProfilingAspectListener;
@@ -107,8 +114,8 @@ public abstract class ApplicationContext {
 		
 		// Offer objects
 		isbnGenerator = isbnGeneratorImpl;
-		booksService = TracingAspect.addAspect(notifyingBooksService);
-		orderService = Aspect.addAspect(simpleOrderService, new TracingAspectListener(), new ProfilingAspectListener(), new NetworkSimulatorAspectListener(200));
+		booksService = addTracingAspect(notifyingBooksService);
+		orderService = addAspect(simpleOrderService, new TracingAspectListener(), new ProfilingAspectListener(), new NetworkSimulatorAspectListener(200));
 		idGenerator = theIdGenerator;
 
 	}
@@ -137,6 +144,32 @@ public abstract class ApplicationContext {
 
 	public static IdGenerator idGenerator() {
 		return idGenerator;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T addAspect(T delegate, AspectListener... aspectListeners) {
+		Aspect aspect = new Aspect();
+		aspect.setDelegate(delegate);
+		aspect.setListeners(Arrays.asList(aspectListeners));
+		List<Class<?>> interfaces = ClassUtils.getAllInterfaces(delegate.getClass());
+		Class<?>[] interfacesArray = new Class[interfaces.size()];
+		interfaces.toArray(interfacesArray);
+		ClassLoader cl = delegate.getClass().getClassLoader();
+		Object proxy = Proxy.newProxyInstance(cl, interfacesArray, aspect);
+		return (T) proxy;
+	}
+
+	
+	public static <T> T addNoOpAspect(T delegate){
+		NoOpAspect aspect = new NoOpAspect();
+		aspect.setDelegate(delegate);
+		return BaseAspect.addAspect(delegate, aspect);
+	}
+	
+	public static <T> T addTracingAspect(T delegate){
+		TracingAspect tracingAspect = new TracingAspect();
+		tracingAspect.setDelegate(delegate);
+		return BaseAspect.addAspect(delegate, tracingAspect);
 	}
 
 }

@@ -17,9 +17,4 @@ public class TracingAspect extends BaseAspect {
 		System.out.println("entering " + methodName);
 	}
 	
-	public static <T> T addAspect(T delegate){
-		TracingAspect tracingAspect = new TracingAspect();
-		tracingAspect.setDelegate(delegate);
-		return BaseAspect.addAspect(delegate, tracingAspect);
-	}
 }

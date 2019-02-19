@@ -12,7 +12,7 @@ public class AspectsTest {
 	//@Test 
 	public void testList(){
 		List<String> names = new ArrayList<>();
-		names = TracingAspect.addAspect(names);
+		names = ApplicationContext.addTracingAspect(names);
 		names.add("Hugo");
 		names.add("Emil");
 		names.add("Fritz");
@@ -23,7 +23,7 @@ public class AspectsTest {
 	@Test 
 	public void testListWithAspect(){
 		List<String> names = new ArrayList<>();
-		names = Aspect.addAspect(names, new AspectListener() {
+		names = ApplicationContext.addAspect(names, new AspectListener() {
 			
 			@Override
 			public Throwable throwing(String methodName, Object[] args, Throwable t) {
@@ -54,7 +54,7 @@ public class AspectsTest {
 	@Test
 	public void testIsbnGenerator(){
 		IsbnGenerator generator = ApplicationContext.isbnGenerator();
-		generator = TracingAspect.addAspect(generator);
+		generator = ApplicationContext.addTracingAspect(generator);
 		System.out.println(generator.next());
 	}
 //	@Test
