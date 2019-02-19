@@ -7,7 +7,6 @@ import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 
 import org.javacream.store.impl.adapter.CustomStoreServiceAdapter;
-import org.javacream.util.net.HostUtil;
 
 @WebService(targetNamespace = "http://services.javacream.org/store")
 public class StoreWebService {

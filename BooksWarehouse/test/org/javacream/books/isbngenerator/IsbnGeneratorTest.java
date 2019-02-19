@@ -26,4 +26,13 @@ public class IsbnGeneratorTest {
 		Assert.assertNotEquals(isbn1,  isbn2);
 		
 	}
+
+	@Test
+	public void isbnGenerationPerformance() {
+		for (int i = 0; i < 1000; i++){
+			isbnGenerator.next();
+		}
+
+	}
+
 }

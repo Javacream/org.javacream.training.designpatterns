@@ -6,7 +6,6 @@ import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 
 import org.javacream.books.isbngenerator.impl.RandomIsbnGenerator;
-import org.javacream.util.net.HostUtil;
 
 @WebService(targetNamespace = "http://services.javacream.org/store")
 public class IsbnGeneratorWebService {
@@ -24,7 +23,7 @@ public class IsbnGeneratorWebService {
 	}
 
 	public static void main(String[] args) {
-		Endpoint.publish("http://" + HostUtil.getHost() + ":9901/IsbnGeneratorWebService", new IsbnGeneratorWebService());
+		Endpoint.publish("http://localhost:9901/IsbnGeneratorWebService", new IsbnGeneratorWebService());
 	}
 
 }

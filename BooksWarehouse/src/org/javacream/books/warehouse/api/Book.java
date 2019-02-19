@@ -1,6 +1,3 @@
-/*
- * Created on 20.04.2004
- */
 package org.javacream.books.warehouse.api;
 
 import java.io.Serializable;
@@ -11,10 +8,21 @@ import java.io.Serializable;
  * @company Javacream
  * @mailto training@rainer-sawitzki.de
  * 
- * ValueObject für die Books-Anwendung
- * 
  */
 public class Book implements Serializable {
+	public Book() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Book(String isbn, String title, double price, boolean available) {
+		super();
+		this.isbn = isbn;
+		this.title = title;
+		this.price = price;
+		this.available = available;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	private String isbn;
